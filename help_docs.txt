@@ -1,23 +1,114 @@
-Navii Built-in Commands:
----------------------------------
-cat <file(s)>       : Display the contents of file(s).
-cd <directory>      : Change the current working directory.
-clear               : Clear the terminal screen.
-cp <src> <dest>     : Copy a file from source to destination (non-recursive).
-echo <text>         : Print the arguments to the screen.
-exit                : Terminate the Navii shell.
-help                : Show this help message by reading this file.
-ls [directory]      : List contents of the current or specified directory.
-mkdir <dir>         : Create a new directory and any necessary parent directories.
-mv <src> <dest>     : Move or rename a file/directory.
-pwd                 : Print the current working directory.
-rm <file/dir>       : Remove a file or an empty directory.
-sudo <cmd> [args]   : **Execute a command with superuser privileges** (prompts for password).
-touch <file(s)>     : Create a new empty file(s).
 
-External Features:
----------------------------------
-<command> [args]    : Execute any external program (e.g., sort, wc, grep).
-cmd1 | cmd2         : **Pipe** the standard output of cmd1 to the standard input of cmd2.
-cmd > file          : **Redirect** standard output of cmd to overwrite file (Output Redirection).
-cmd < file          : **Redirect** the contents of file to the standard input of cmd (Input Redirection).
+                    Navii Shell Help
+
+                This is the Navii Shell help!
+
+Navii Built-in Commands
+------------------------------------------------------------
+cat <file(s)>
+    Display the contents of one or more files.
+
+cd <directory>
+    Change the current working directory.
+    Supports ~ expansion and environment variables.
+
+clear
+    Clear the terminal screen.
+
+cp <src> <dest>
+    Copy a file from source to destination (non-recursive).
+    Directories are not copied unless using external 'cp -r'.
+
+echo <text>
+    Print the given text to the screen.
+    Supports ~ and $VARIABLE expansion.
+
+exit
+    Exit the Navii shell.
+
+export [VAR=value]
+    Set an environment variable or display all exported variables.
+    Example:
+        export MY_VAR=/tmp
+        export
+    Supports $VARIABLE expansion.
+
+help
+    Display this help message.
+
+ls [directory]
+    List the contents of a directory.
+    Hidden files are omitted.
+    Supports ~ and $VARIABLE expansion.
+
+mkdir <directory(ies)>
+    Create one or more directories, including parents if necessary.
+
+mv <src> <dest>
+    Move or rename a file or directory.
+
+pwd
+    Print the current working directory.
+
+rm <file/dir>
+    Remove a file or an empty directory.
+    Does NOT perform recursive deletion unless using external rm -r.
+
+sudo <command> [args]
+    Execute a command with superuser privileges.
+    (Requires system 'sudo' installed.)
+
+touch <file(s)>
+    Create empty files or update modification timestamps.
+
+unset <VAR>
+    Remove an environment variable.
+
+------------------------------------------------------------
+External Commands & System Utilities
+------------------------------------------------------------
+Any unknown command is executed as a system program.
+Examples:
+    uname -a
+    whoami
+    python3 script.py
+
+------------------------------------------------------------
+Pipes and Redirection
+------------------------------------------------------------
+
+cmd1 | cmd2
+    Pipe the output of cmd1 into cmd2.
+    Only single pipes are supported.
+
+cmd > file
+    Redirect standard output of a command into a file
+    (overwrites existing file).
+
+cmd < file
+    Feed a file’s contents as standard input to a command.
+
+Notes:
+    • Pipes cannot be used with state-changing commands
+      like 'cd' or 'exit'.
+    • Redirection cannot be combined with pipes yet.
+
+------------------------------------------------------------
+Variable & Tilde Expansion
+------------------------------------------------------------
+Navii supports:
+    ~                       → Home directory
+    ~/path                  → Path in home directory
+    $VAR                    → Expand environment variable
+    $HOME, $PATH, etc.     → System environment variables
+
+Examples:
+    cd ~
+    ls ~/Documents
+    export MY_DIR=/tmp/data
+    cd $MY_DIR
+    echo $PATH
+
+============================================================
+                Welcome to the Navii Shell!
+============================================================
