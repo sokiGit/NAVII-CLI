@@ -61,6 +61,17 @@ sudo <command> [args]
 touch <file(s)>
     Create empty files or update modification timestamps.
 
+alias [NAME COMMAND]
+    Create or list aliases.
+    - To create an alias: alias ll "ls -l"
+    - To list all aliases: alias
+    Aliases are saved in ~/.navii_rc and persist between sessions.
+
+unalias NAME
+    Remove an alias.
+    - Example: unalias ll
+    If the alias does not exist, a warning is shown.
+
 unset <VAR>
     Remove an environment variable.
 
