@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import shlex
+import os 
 
 from utils.alias import check_alias
 
@@ -26,23 +27,28 @@ def execute_navii_redirect(user_input):
             user_input,
             check=False,
             shell=True,
-            executable="/bin/sh",
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
             timeout=15,
         )
+        
         if process.stdout:
             sys.stdout.write(process.stdout)
+            
         if process.stderr:
             sys.stderr.write(f"Redirection Error: {process.stderr}")
+            
         return process.returncode
-    except FileNotFoundError:
-        print("Navii: System shell (/bin/sh) not found. Cannot execute redirected command.")
-        return 127
+        
     except subprocess.TimeoutExpired:
         print("Navii: Redirected command timed out.")
         return 1
     except Exception as e:
-        print(f"Navii redirection execution error: {e}")
-        return 1
+        if isinstance(e, FileNotFoundError):
+             shell_name = 'cmd.exe' if os.name == 'nt' else '/bin/sh'
+             print(f"Navii: System shell ({shell_name}) or command not found. Cannot execute redirected command.")
+             return 127
+        else:
+            print(f"Navii redirection execution error: {e}")
+            return 1

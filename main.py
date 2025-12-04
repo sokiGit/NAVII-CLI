@@ -1,9 +1,22 @@
 import os
 import sys
-import readline
 import pathlib
 import getpass
 import shlex
+
+try:
+    # Linux/MacOS
+    import readline
+    USING_READLINE = True
+except ImportError:
+    try:
+        # Windows
+        from pyreadline3 import Readline
+        readline = Readline()
+        USING_READLINE = True
+    except ImportError:
+        readline = None
+        USING_READLINE = False
 
 from utils.expands_vars import expand_vars_and_tilde
 from utils.redirect import execute_navii_redirect
@@ -29,10 +42,11 @@ def main():
  """
     print(logo)
 
-    try:
-        readline.read_history_file(HISTORY_FILE)
-    except:
-        pass
+    if USING_READLINE and readline:
+        try:
+            readline.read_history_file(HISTORY_FILE)
+        except FileNotFoundError:
+            pass
 
     print("Welcome to Navii.")
     username = input("Enter your shell handle (e.g., miku): ").strip()
@@ -42,7 +56,7 @@ def main():
         except:
             username = "guest"
 
-    print(f"Welcome home {username}\nType 'exit' to quit. Pipes (|), Redirection (>, <), external functions, expanded input, unset, aliasing/unaliasing and sudo are now supported. Type 'help' for command and function list.")
+    print(f"Welcome home {username}\nType 'exit' to quit. Windows support was added! Type 'help' for command and function list.")
 
 
     while True:
@@ -94,6 +108,13 @@ def main():
             print("\nInterrupted.")
         except EOFError:
             break
+        
+    if USING_READLINE and readline:
+        try:
+            readline.set_history_length(MAX_HISTORY_SIZE)
+            readline.write_history_file(HISTORY_FILE)
+        except:
+            pass
 
 if __name__ == "__main__":
     main()
