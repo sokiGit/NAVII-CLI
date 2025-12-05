@@ -22,6 +22,7 @@ from utils.expands_vars import expand_vars_and_tilde
 from utils.redirect import execute_navii_redirect
 from utils.pipe import execute_navii_pipe
 from utils.alias import check_alias, save_alias, load_aliases
+from commands.clear import shell_clear
 from executor import execute_shell_command
 from Builtins import BUILTIN_COMMANDS
 
@@ -30,7 +31,8 @@ HISTORY_FILE = os.path.join(os.path.expanduser("~"), ".navii_history")
 MAX_HISTORY_SIZE = 1000
 
 def main():
-    os.system("clear")
+    shell_clear(None) #NOTE: Argument is required yet not used, is it necessary?
+
     logo = """
   ____    ____  __ __   ____  ____ 
  |    \  /    ||  |  | |    ||    |
@@ -71,6 +73,10 @@ def main():
 
             expanded = expand_vars_and_tilde(user_input)
             parts = shlex.split(expanded)
+            
+            # Handle when expand_vars_and_tilde returns nothing
+            if len(parts) == 0:
+                continue
             command = parts[0]
             alsname = check_alias(command)
             if ">" in expanded or "<" in expanded:
