@@ -71,8 +71,13 @@ def main():
             if not user_input.strip():
                 continue
 
-            expanded = expand_vars_and_tilde(user_input)
-            parts = shlex.split(expanded)
+            expanded = expand_vars_and_tilde(user_input).replace(os.sep, os.sep * 2)
+            parts: list[str] = []
+
+            try:
+                parts = shlex.split(expanded)
+            except Exception as e:
+                print(f"Navii: Faild to parse arguments: {e}")
             
             # Handle when expand_vars_and_tilde returns nothing
             if len(parts) == 0:
